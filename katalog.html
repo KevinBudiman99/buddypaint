@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buddy Paint - Katalog Warna</title>
+    <style>
+        :root {
+        --bg: #f4efe7;
+        --bg-strong: #e9dfd0;
+        --panel: #fffdf8;
+        --panel-soft: #f4ead8;
+        --text: #1d1815;
+        --muted: #655d58;
+        --accent: #d3b28c;
+        --accent-strong: #a86e3a;
+        --dark: #1a1513;
+        --line: #eadfcf;
+        --shadow: rgba(29, 24, 21, 0.08);
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+        background: linear-gradient(180deg, #f8f3ee 0%, var(--bg) 100%);
+        color: var(--text);
+        line-height: 1.6;
+    }
+
+    h1, h2, h3 {
+        font-family: Georgia, 'Times New Roman', serif;
+        letter-spacing: -0.04em;
+        color: var(--text);
+    }
+
+    header {
+        background: rgba(255, 255, 255, 0.74);
+        border-bottom: 1px solid var(--line);
+        backdrop-filter: blur(10px);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        transition: box-shadow 0.25s ease, background 0.25s ease;
+    }
+
+    header.scrolled {
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 12px 28px rgba(29, 24, 21, 0.08);
+    }
+
+    nav {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 18px 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+    }
+
+    .logo {
+        font-size: 24px;
+        font-weight: 800;
+        color: var(--dark);
+        text-decoration: none;
+        letter-spacing: -0.05em;
+    }
+
+    .logo span {
+        color: var(--accent-strong);
+    }
+
+    nav a {
+        text-decoration: none;
+        color: var(--text);
+        margin-left: 20px;
+        font-size: 12px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        font-weight: 700;
+        position: relative;
+        padding-bottom: 6px;
+    }
+
+    nav a::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 2px;
+        background: var(--accent-strong);
+        border-radius: 999px;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.22s ease;
+    }
+
+    nav a.active, nav a:hover {
+        color: var(--accent-strong);
+    }
+
+    nav a.active::after, nav a:hover::after {
+        transform: scaleX(1);
+    }
+
+    .menu-toggle {
+        display: none;
+        width: 46px;
+        height: 46px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.8);
+        cursor: pointer;
+        padding: 10px 8px;
+        margin-left: auto;
+    }
+
+    .menu-toggle span {
+        display: block;
+        width: 100%;
+        height: 2px;
+        background: var(--dark);
+        border-radius: 99px;
+        margin: 5px 0;
+        transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+
+    .menu-toggle.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .menu-toggle.is-open span:nth-child(2) { opacity: 0; }
+    .menu-toggle.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    @media (max-width: 760px) {
+        nav {
+            flex-wrap: wrap;
+            padding: 14px 16px;
+            gap: 10px;
+        }
+
+        .menu-toggle {
+            display: inline-block;
+        }
+
+        nav a {
+            margin-left: 0;
+            display: block;
+            padding: 10px 12px;
+            border-radius: 10px;
+        }
+
+        nav {
+            display: flex;
+        }
+
+        nav a:not(.logo) {
+            display: none;
+        }
+
+        nav.is-open a:not(.logo) {
+            display: block;
+        }
+
+        nav.is-open {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        nav.is-open a:not(.logo):hover {
+            background: rgba(200, 168, 131, 0.08);
+        }
+    }
+
+    .page-header {
+        background: radial-gradient(circle at top left, rgba(255,255,255,0.75), transparent 38%), linear-gradient(135deg, #f5ebdf 0%, #f1e0ca 48%, #e8d6b6 100%);
+            padding: 56px 20px 46px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .page-header h1 {
+            color: var(--dark);
+            margin-bottom: 10px;
+            font-size: clamp(2.4rem, 5vw, 4rem);
+        }
+
+        .page-header p {
+            color: var(--muted);
+            max-width: 760px;
+            margin: 0 auto;
+            font-size: 1.05rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .grid-produk {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .kartu-produk {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            width: 220px;
+            cursor: pointer;
+            text-align: center;
+            overflow: hidden;
+            transition: 0.2s;
+            box-shadow: 0 10px 24px var(--shadow);
+        }
+
+        .kartu-produk:hover {
+            border-color: var(--accent);
+            box-shadow: 0 16px 30px rgba(29, 24, 21, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .warna-preview {
+            height: 140px;
+            width: 100%;
+        }
+
+        .detail-produk {
+            padding: 15px;
+        }
+
+        .kode-produk {
+            font-size: 12px;
+            color: var(--muted);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .judul-produk {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 5px 0;
+            color: var(--dark);
+        }
+
+        .kategori-produk {
+            display: none;
+        }
+
+        .modal-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(28, 25, 23, 0.45);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-box {
+            background: var(--panel);
+            width: 90%;
+            max-width: 430px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 25px;
+            border-radius: 22px;
+            position: relative;
+            border: 1px solid var(--line);
+            box-shadow: 0 18px 42px rgba(29, 24, 21, 0.14);
+        }
+
+        .tombol-tutup {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--muted);
+        }
+
+        .modal-swatch {
+            height: 100px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 1px solid var(--line);
+        }
+
+        .preview-kemasan {
+            height: 190px;
+            margin-bottom: 15px;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            background-color: #fbf7f2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .preview-kemasan img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .teks-gambar-kemasan {
+            padding: 15px;
+            color: var(--muted);
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .pilihan-berat {
+            margin: 15px 0;
+            display: grid;
+            gap: 10px;
+        }
+
+        .pilihan-berat label {
+            font-size: 14px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .harga-display {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--dark);
+            margin: 18px 0 14px;
+        }
+
+        .btn-beli {
+            width: 100%;
+            background: var(--dark);
+            color: white;
+            border: none;
+            padding: 14px 16px;
+            border-radius: 999px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .btn-beli:hover {
+            background: var(--accent-strong);
+        }
+
+        footer {
+            background: var(--dark);
+            color: #d8cfc5;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            font-size: 14px;
+        }
+    </style>
+    <link rel="stylesheet" href="header.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="site-header catalog-header">
+        <a href="index.html" class="brand-logo" aria-label="Buddy Paint beranda">
+            <span class="brand-mark" aria-hidden="true">
+                <img src="logo.png" alt="" />
+            </span>
+            <span class="brand-text">BUDDY<span>.PAINT</span></span>
+        </a>
+        <button class="menu-toggle" type="button" aria-label="Buka menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <nav class="nav-menu">
+            <a href="index.html">Home</a>
+            <a href="katalog.html" class="active">Katalog</a>
+            <a href="profil.html">Profil</a>
+            <a href="kontak.html">Kontak</a>
+            <a href="sumber-gambar.html">Sumber</a>
+        </nav>
+    </header>
+    <button class="header-peek" type="button" aria-label="Tampilkan navigasi" aria-expanded="false" title="Tampilkan navigasi">
+        <span></span><span></span><span></span>
+    </button>
+
+    <!-- Banner Judul -->
+    <div class="page-header">
+        <h1>Katalog Warna Cat</h1>
+        <p>Klik pada warna pilihan Anda untuk melihat detail dan opsi pembelian ukuran kemasan.</p>
+    </div>
+
+    <!-- Konten Utama (Grid Warna Cat) -->
+    <main class="container">
+        <div class="grid-produk">
+
+            <!-- Produk 1 -->
+            <div class="kartu-produk" onclick="bukaModal('Pure Pearl White', 'LM-001', '#f8fafc', 'Cat Dasar & Plafon', 75000)">
+                <div class="warna-preview" style="background-color: #f8fafc; border-bottom: 1px solid #eeeeee;"></div>
+                <div class="detail-produk">
+                    <div class="kode-produk">LM-001</div>
+                    <div class="judul-produk">Pure Pearl White</div>
+                    <div class="kategori-produk">Cat Dasar & Plafon</div>
+                </div>
+            </div>
+
+            <div class="kartu-produk" onclick="bukaModal('Buttercream', 'LM-411', '#f6e7b2', 'Cat Dasar & Plafon', 79000)">
+                <div class="warna-preview" style="background-color: #f6e7b2;"></div>
+                <div class="detail-produk">
+                    <div class="kode-produk">LM-411</div>
+                    <div class="judul-produk">Buttercream</div>
+                    <div class="kategori-produk">Cat Dasar & Plafon</div>
+                </div>
+            </div>
+
+            <div class="kartu-produk" onclick="bukaModal('Dune Beige', 'LM-419', '#d8c4a0', 'Cat Dasar & Plafon', 82000)">
+                <div class="warna-preview" style="background-color: #d8c4a0;"></div>
+                <div class="detail-produk">
+                    <div class="kode-produk">LM-419</div>
+                    <div class="judul-produk">Dune Beige</div>
+                    <div class="kategori-produk">Cat Dasar & Plafon</div>
+                </div>
+            </div>
+
+            <div class="kartu-produk" onclick="bukaModal('Blush Peach', 'LM-409', '#f4a98a', 'Interior Premium', 91000)">
+                <div class="warna-preview" style="background-color: #f4a98a;"></div>
+                <div class="detail-produk">
+                    <div class="kode-produk">LM-409</div>
+                    <div class="judul-produk">Blush Peach</div>
+                    <div class="kategori-produk">Interior Premium</div>
+                </div>
+            </div>
+
+            <div class="kartu-produk" onclick="bukaModal('Peony Pink', 'LM-417', '#f4b6c2', 'Interior Premium', 97000)">
+                <div class="warna-preview" style="background-color: #f4b6c2;"></div>
+                <div class="detail-produk">
+                    <div class="kode-produk">LM-417</div>
+                    <div class="judul-produk">Peony Pink</div>
+                    <div class="kategori-produk">Interior Premium</div>
+                </div>
+            </div>
+
+            <div class="kartu-produk" onclick="bukaModal('Dusty Rose', 'LM-402', '#d8a1a8', 'Interior Premium', 93000)">
+                <div class="warna-preview" style="background-color: #d8a1a8;"></div>
+                <div class="detail-produk">
+                    <div class="kode-produk">LM-402</div>
+                    <div class="judul-produk">Dusty Rose</div>
+                    <div class="kategori-produk">Interior Premium</div>
+                </div>
+            </div>
+
+            <div class="kartu-produk" onclick="bukaModal('Coral Reef', 'LM-413', '#fb7185', 'Interior Premium', 96000)">
+                <div class="warna-preview" style="background-color: #fb7185;"></div>
+                <div class="detail-produk">
+                    <div class="kode-produk">LM-413</div>
+                    <div class="judul-produk">Coral Reef</div>
+                    <div class="kategori-produk">Interior Premium</div>
+                </div>
+            </div>
+
+            <div class="kartu-produk" onclick="bukaModal('Warm Sunset Clay', 'LM-308', '#f97316', 'Eksterior Tahan Cuaca', 110000)">
+                <div class="warna-preview" style="background-color: #f97316;"></div>
+                <div class="detail-produk">
+                    <div class="kode-produk">LM-308</div>
+                    <div class="judul-produk">Warm Sunset Clay</div>
+                    <div class="kategori-produk">Eksterior Tahan Cuaca</div>
+                </div>
+            </div>
+
+            <div class="kartu-produk" onclick="bukaModal('Terracotta Earth', 'LM-406', '#c56b4e', 'Eksterior Tahan Cuaca', 105000)">
+                <div class="warna-preview" style="background-color: #c56b4e;"></div>
+                <div class="detail-produk">
+                    <div class="kode-produk">LM-406</div>
+                    <div class="judul-produk">Terracotta Earth</div>
+                    <div class="kategori-produk">Eksterior Tahan Cuaca</div>
+                </div>
+            </div>
+
+            <div class="kartu-produk" onclick="bukaModal('Cocoa Brown', 'LM-412', '#795548', 'Interior & Eksterior', 94000)">
+                <div class="warna-preview" style="background-color: #795548;"></div>
+                <div class="detail-produk">
+                    <div class="kode-produk">LM-412</div>
+                    <div class="judul-produk">Cocoa Brown</div>
+                    <div class="kategori-produk">Interior & Eksterior</div>
+                </div>
+            </div>
+
+            <div class="kartu-produk" onclick="bukaModal('Golden Sand', 'LM-405', '#e9c46a', 'Interior & Eksterior', 87000)">
+                <div class="warna-preview" style="background-color: #e9c46a;"></div>
+                <div class="detail-produk">
+                    <div class="kode-produk">LM-405</div>
+                    <div class="judul-produk">Golden Sand</div>
+                    <div class="kategori-produk">Interior & Eksterior</div>
+                </div>
+            </div>
+
+            <div class="kartu-produk" onclick="bukaModal('Lime Meadow', 'LM-416', '#a3c644', 'Interior & Eksterior', 86000)">
+                <div class="warna-preview" style="background-color: #a3c644;"></div>
+                <div class="detail-produk">
+                    <div class="kode-produk">LM-416</div>
+                    <div class="judul-produk">Lime Meadow</div>
+                    <div class="kategori-produk">Interior & Eksterior</div>
+                </div>
+            </div>
+
+            <div class="kartu-produk" onclick="bukaModal('Olive Mist', 'LM-420', '#b8b08e', 'Eksterior Tahan Cuaca', 101000)">
+                <div class="warna-preview" style="background-color: #b8b08e;"></div>
+                <div class="detail-produk">
+                    <div class="kode-produk">LM-420</div>
+                    <div class="judul-produk">Olive Mist</div>
+                    <div class="kategori-produk">Eksterior Tahan Cuaca</div>
+                </div>
+            </div>
+
+            <div class="kartu-produk" onclick="bukaModal('Sage Garden', 'LM-403', '#9caf88', 'Interior & Eksterior', 89000)">
+                <div class="warna-preview" style="background-color: #9caf88;"></div>
+                <div class="detail-produk">
+                    <div class="kode-produk">LM-403</div>
+                    <div class="judul-produk">Sage Garden</div>
+                    <div class="kategori-produk">Interior & Eksterior</div>
+                </div>
+            </div>
+
+            <div class="kartu-produk" onclick="bukaModal('Mossy Forest', 'LM-410', '#556b2f', 'Eksterior Tahan Cuaca', 112000)">
+                <div class="warna-preview" style="background-color: #556b2f;"></div>
+                <div class="detail-produk">
+                    <div class="kode-produk">LM-410</div>
+                    <div class="judul-produk">Mossy Forest</div>
+                    <div class="kategori-produk">Eksterior Tahan Cuaca</div>
+                </div>
+            </div>
+
+            <div class="kartu-produk" onclick="bukaModal('Emerald Minimalist', 'LM-204', '#10b981', 'Interior Premium', 95000)">
+                <div class="warna-preview" style="background-color: #10b981;"></div>
+                <div class="detail-produk">
+                    <div class="kode-produk">LM-204</div>
+                    <div class="judul-produk">Emerald Minimalist</div>
+                    <div class="kategori-produk">Interior Premium</div>
+                </div>
+            </div>
+
+            <div class="kartu-produk" onclick="bukaModal('Ocean Teal', 'LM-404', '#0f766e', 'Eksterior Tahan Cuaca', 108000)">
+                <div class="warna-preview" style="background-color: #0f766e;"></div>
+                <div class="detail-produk">
+                    <div class="kode-produk">LM-404</div>
+                    <div class="judul-produk">Ocean Teal</div>
+                    <div class="kategori-produk">Eksterior Tahan Cuaca</div>
+                </div>
+            </div>
+
+            <div class="kartu-produk" onclick="bukaModal('Aqua Breeze', 'LM-414', '#67cbd1', 'Interior & Eksterior', 88000)">
+                <div class="warna-preview" style="background-color: #67cbd1;"></div>
+                <div class="detail-produk">
+                    <div class="kode-produk">LM-414</div>
+                    <div class="judul-produk">Aqua Breeze</div>
+                    <div class="kategori-produk">Interior & Eksterior</div>
+                </div>
+            </div>
+
+            <div class="kartu-produk" onclick="bukaModal('Serene Sky Blue', 'LM-101', '#38bdf8', 'Interior & Eksterior', 85000)">
+                <div class="warna-preview" style="background-color: #38bdf8;"></div>
+                <div class="detail-produk">
+                    <div class="kode-produk">LM-101</div>
+                    <div class="judul-produk">Serene Sky Blue</div>
+                    <div class="kategori-produk">Interior & Eksterior</div>
+                </div>
+            </div>
+
+            <div class="kartu-produk" onclick="bukaModal('Slate Blue', 'LM-418', '#6b7ea8', 'Interior & Eksterior', 99000)">
+                <div class="warna-preview" style="background-color: #6b7ea8;"></div>
+                <div class="detail-produk">
+                    <div class="kode-produk">LM-418</div>
+                    <div class="judul-produk">Slate Blue</div>
+                    <div class="kategori-produk">Interior & Eksterior</div>
+                </div>
+            </div>
+
+            <div class="kartu-produk" onclick="bukaModal('Lavender Mist', 'LM-401', '#c4b5fd', 'Interior Premium', 92000)">
+                <div class="warna-preview" style="background-color: #c4b5fd;"></div>
+                <div class="detail-produk">
+                    <div class="kode-produk">LM-401</div>
+                    <div class="judul-produk">Lavender Mist</div>
+                    <div class="kategori-produk">Interior Premium</div>
+                </div>
+            </div>
+
+            <div class="kartu-produk" onclick="bukaModal('Misty Mountain', 'LM-407', '#94a3b8', 'Interior & Eksterior', 90000)">
+                <div class="warna-preview" style="background-color: #94a3b8;"></div>
+                <div class="detail-produk">
+                    <div class="kode-produk">LM-407</div>
+                    <div class="judul-produk">Misty Mountain</div>
+                    <div class="kategori-produk">Interior & Eksterior</div>
+                </div>
+            </div>
+
+            <div class="kartu-produk" onclick="bukaModal('Midnight Navy', 'LM-408', '#1e3a5f', 'Interior Premium', 98000)">
+                <div class="warna-preview" style="background-color: #1e3a5f;"></div>
+                <div class="detail-produk">
+                    <div class="kode-produk">LM-408</div>
+                    <div class="judul-produk">Midnight Navy</div>
+                    <div class="kategori-produk">Interior Premium</div>
+                </div>
+            </div>
+
+            <div class="kartu-produk" onclick="bukaModal('Charcoal Slate', 'LM-415', '#475569', 'Eksterior Tahan Cuaca', 103000)">
+                <div class="warna-preview" style="background-color: #475569;"></div>
+                <div class="detail-produk">
+                    <div class="kode-produk">LM-415</div>
+                    <div class="judul-produk">Charcoal Slate</div>
+                    <div class="kategori-produk">Eksterior Tahan Cuaca</div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+        </div>
+    </main>
+
+    <!-- Pop-up Modal Detail & Pembelian -->
+    <div class="modal-bg" id="modalBeli">
+        <div class="modal-box">
+            <button class="tombol-tutup" onclick="tutupModal()">&times;</button>
+            <div class="modal-swatch" id="modalGambarWarna"></div>
+            <h2 id="modalNamaWarna">Nama Warna</h2>
+            <p id="modalSubWarna" style="color: #666; font-size: 14px; margin-bottom: 15px;">Kode | Kategori</p>
+
+            <div class="preview-kemasan">
+                <img id="gambarKemasan" alt="Gambar kemasan cat" hidden>
+                <p class="teks-gambar-kemasan" id="teksGambarKemasan">Gambar kemasan belum tersedia.</p>
+            </div>
+
+            <label style="font-weight: bold;">Pilih Variasi:</label>
+            <div class="pilihan-berat">
+                <label>
+                    <input type="radio" name="ukuranKg" value="1" checked onchange="hitungHarga()"> Vinilex
+                </label>
+                <label>
+                    <input type="radio" name="ukuranKg" value="2.5" onchange="hitungHarga()"> Matex
+                </label>
+                <label>
+                    <input type="radio" name="ukuranKg" value="20" onchange="hitungHarga()"> Tilelac
+                </label>
+            </div>
+
+            <div class="harga-display" id="displayHarga">Rp 0</div>
+            <button class="btn-beli" onclick="tambahKeranjang()">Tambah ke Keranjang</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        &copy; 2026 Buddy Paint Indonesia.
+    </footer>
+
+    <!-- JavaScript Interaktif -->
+
+    <script>
+        const header = document.querySelector('.site-header');
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+
+        if (header) {
+            window.addEventListener('scroll', () => {
+                header.classList.toggle('scrolled', window.scrollY > 12);
+            });
+        }
+
+        if (menuToggle && navMenu) {
+            menuToggle.addEventListener('click', () => {
+                const isOpen = navMenu.classList.toggle('is-open');
+                menuToggle.classList.toggle('is-open', isOpen);
+                menuToggle.setAttribute('aria-expanded', String(isOpen));
+            });
+
+            navMenu.querySelectorAll('a').forEach((link) => {
+                link.addEventListener('click', () => {
+                    navMenu.classList.remove('is-open');
+                    menuToggle.classList.remove('is-open');
+                    menuToggle.setAttribute('aria-expanded', 'false');
+                });
+            });
+
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 760) {
+                    navMenu.classList.remove('is-open');
+                    menuToggle.classList.remove('is-open');
+                    menuToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+        }
+    </script>
+    <script>
+        // Variabel global untuk menyimpan harga dasar produk
+        let hargaDasar = 0;
+        const variasiHarga = {
+            '1': { nama: 'Vinilex', harga: 250000 },
+            '2.5': { nama: 'Walltron', harga: 300000 },
+            '20': { nama: 'Matex', harga: 200000 }
+        };
+        const gambarKemasanPerUkuran = {
+            '1': { nama: 'Vinilex', file: 'Vinilex.png' },
+            '2.5': { nama: 'Matex', file: 'Matex.png' },
+            '20': { nama: 'Tilelac', file: 'Tilelac.png' }
+        };
+
+        // 1. Fungsi untuk membuka modal dan menampilkan data produk yang diklik
+        function bukaModal(nama, kode, warnaHex, kategori, harga) {
+            hargaDasar = harga; // Simpan harga dasar produk
+
+            // Mengisi elemen HTML di dalam modal sesuai data produk yang diklik
+            document.getElementById('modalNamaWarna').innerText = nama;
+            document.getElementById('modalSubWarna').innerText = kode;
+            document.getElementById('modalGambarWarna').style.backgroundColor = warnaHex;
+
+            // Reset radio button ke opsi 1 KG setiap kali modal dibuka
+            let radioUkuran = document.getElementsByName('ukuranKg');
+            radioUkuran[0].checked = true;
+
+            // Hitung harga awal untuk 1 KG
+            hitungHarga();
+
+            // Tampilkan pop-up modal
+            document.getElementById('modalBeli').style.display = 'flex';
+        }
+
+        // 2. Fungsi untuk menutup modal pop-up
+        function tutupModal() {
+            document.getElementById('modalBeli').style.display = 'none';
+        }
+
+        // 3. Fungsi untuk menghitung harga total berdasarkan variasi produk
+        function hitungHarga() {
+            let ukuranDipilih = 1;
+            let radioUkuran = document.getElementsByName('ukuranKg');
+
+            for (let i = 0; i < radioUkuran.length; i++) {
+                if (radioUkuran[i].checked) {
+                    ukuranDipilih = parseFloat(radioUkuran[i].value);
+                    break;
+                }
+            }
+
+            tampilkanGambarKemasan(ukuranDipilih);
+
+            const pilihan = variasiHarga[String(ukuranDipilih)];
+            const totalHarga = pilihan ? pilihan.harga : hargaDasar;
+
+            document.getElementById('displayHarga').innerText = 'Rp ' + totalHarga.toLocaleString('id-ID');
+        }
+
+        // Tampilkan gambar bucket yang sesuai dengan ukuran KG terpilih
+        function tampilkanGambarKemasan(ukuran) {
+            const gambar = document.getElementById('gambarKemasan');
+            const teksGambar = document.getElementById('teksGambarKemasan');
+            const kemasan = gambarKemasanPerUkuran[String(ukuran)];
+
+            gambar.hidden = true;
+            teksGambar.hidden = false;
+            teksGambar.innerText = 'Gambar kemasan ' + kemasan.nama + ' belum tersedia.';
+            gambar.alt = 'Kemasan cat ukuran ' + kemasan.nama;
+
+            gambar.onload = function() {
+                gambar.hidden = false;
+                teksGambar.hidden = true;
+            };
+
+            gambar.onerror = function() {
+                gambar.hidden = true;
+                teksGambar.hidden = false;
+            };
+
+            gambar.src = kemasan.file;
+        }
+
+        // 4. Fungsi saat tombol "Tambah ke Keranjang" diklik
+        function tambahKeranjang() {
+            alert('Produk berhasil ditambahkan ke keranjang!');
+            tutupModal();
+        }
+    </script>
+    <script src="header.js"></script>
+</body>
+</html>
