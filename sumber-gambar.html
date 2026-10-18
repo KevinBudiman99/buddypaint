@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buddy Paint - Sumber</title>
+    <style>
+        :root {
+            --bg: #f4efe7;
+            --bg-strong: #e9dfd0;
+            --panel: #fffdf8;
+            --panel-soft: #f4ead8;
+            --text: #1d1815;
+            --muted: #655d58;
+            --accent: #d3b28c;
+            --accent-strong: #a86e3a;
+            --dark: #1a1513;
+            --line: #eadfcf;
+            --shadow: rgba(29, 24, 21, 0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background: linear-gradient(180deg, #f8f3ee 0%, var(--bg) 100%); color: var(--text); line-height: 1.6; min-height: 100vh; display: flex; flex-direction: column; }
+        h1, h2, h3 { font-family: Georgia, 'Times New Roman', serif; letter-spacing: -0.04em; }
+        header { background: rgba(255, 255, 255, 0.74); border-bottom: 1px solid var(--line); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 1000; transition: box-shadow 0.25s ease, background 0.25s ease; }
+        header.scrolled { background: rgba(255,255,255,0.9); box-shadow: 0 12px 28px rgba(29,24,21,0.08); }
+        nav { max-width: 1200px; margin: 0 auto; padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+        .logo { color: var(--dark); font-size: 24px; font-weight: 800; text-decoration: none; white-space: nowrap; letter-spacing: -0.05em; }
+        .logo span { color: var(--accent-strong); }
+        .nav-links { display: flex; flex-wrap: wrap; gap: 20px; list-style: none; }
+        .nav-links a { color: var(--text); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; text-decoration: none; position: relative; padding-bottom: 6px; }
+        .nav-links a::after { content: ""; position: absolute; left: 0; bottom: 0; width: 100%; height: 2px; background: var(--accent-strong); border-radius: 999px; transform: scaleX(0); transform-origin: left; transition: transform 0.22s ease; }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent-strong); }
+        .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
+
+        .menu-toggle { display: none; width: 46px; height: 46px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,0.8); cursor: pointer; padding: 10px 8px; }
+        .menu-toggle span { display: block; width: 100%; height: 2px; background: var(--dark); border-radius: 99px; margin: 5px 0; transition: transform 0.25s ease, opacity 0.25s ease; }
+        .menu-toggle.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .menu-toggle.is-open span:nth-child(2) { opacity: 0; }
+        .menu-toggle.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+        main { width: min(100% - 40px, 1000px); margin: 48px auto; flex: 1; }
+        .page-header { margin-bottom: 28px; background: radial-gradient(circle at top left, rgba(255,255,255,0.75), transparent 38%), linear-gradient(135deg, #f5ebdf 0%, #f1e0ca 48%, #e8d6b6 100%); border: 1px solid var(--line); border-radius: 20px; padding: 28px 24px; box-shadow: 0 10px 24px var(--shadow); }
+        .eyebrow { color: var(--accent-strong); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; }
+        h1 { color: var(--dark); font-size: clamp(30px, 5vw, 42px); line-height: 1.2; margin: 8px 0 12px; }
+        .page-header p { color: var(--muted); }
+        .table-wrap { overflow-x: auto; background: linear-gradient(135deg, rgba(255,255,255,0.78), rgba(244,234,216,0.82)); border: 1px solid var(--line); border-radius: 20px; box-shadow: 0 10px 24px var(--shadow); }
+        table { width: 100%; border-collapse: collapse; min-width: 700px; text-align: left; }
+        th, td { padding: 16px 18px; border-bottom: 1px solid var(--line); vertical-align: top; }
+        th { background: rgba(246,239,229,0.9); color: var(--dark); font-size: 14px; text-transform: uppercase; letter-spacing: 0.08em; }
+        td { font-size: 14px; color: var(--text); }
+        td code { color: var(--accent-strong); }
+        tbody tr:last-child td { border-bottom: 0; }
+        footer { margin-top: auto; background: var(--dark); color: #d8cfc5; padding: 24px; text-align: center; font-size: 14px; }
+        @media (max-width: 680px) {
+            nav { align-items: center; flex-direction: row; gap: 12px; }
+            .menu-toggle { display: inline-block; }
+            .nav-links { position: absolute; top: calc(100% + 10px); right: 16px; left: 16px; background: rgba(255,255,255,0.96); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 18px 38px rgba(29,24,21,0.08); padding: 10px 12px; flex-direction: column; gap: 8px; opacity: 0; pointer-events:none; transform: translateY(-8px); transition: opacity 0.2s ease, transform 0.2s ease; }
+            .nav-links.is-open { opacity: 1; pointer-events: auto; transform: translateY(0); }
+            .nav-links a { display: block; padding: 10px 12px; border-radius: 10px; }
+            main { margin: 32px auto; }
+        }
+    </style>
+    <link rel="stylesheet" href="header.css">
+</head>
+<body>
+    <header class="site-header">
+        <nav>
+            <a href="index.html" class="brand-logo" aria-label="Buddy Paint beranda">
+                <span class="brand-mark" aria-hidden="true">
+                    <img src="logo.png" alt="" />
+                </span>
+                <span class="brand-text">BUDDY<span>.PAINT</span></span>
+            </a>
+            <button class="menu-toggle" type="button" aria-label="Buka menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="katalog.html">Katalog</a></li>
+                <li><a href="profil.html">Profil</a></li>
+                <li><a href="kontak.html">Kontak</a></li>
+                <li><a href="sumber-gambar.html" class="active">Sumber</a></li>
+            </ul>
+        </nav>
+    </header>
+    <button class="header-peek" type="button" aria-label="Tampilkan navigasi" aria-expanded="false" title="Tampilkan navigasi">
+        <span></span><span></span><span></span>
+    </button>
+
+    <main>
+        <section class="page-header">
+            <span class="eyebrow">Referensi</span>
+            <h1>Sumber</h1>
+            <p>Catatan asal, pemilik, dan izin penggunaan gambar yang ditampilkan di situs Buddy Paint.</p>
+        </section>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nama berkas</th>
+                        <th>Penggunaan</th>
+                        <th>Pembuat / sumber</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code><a href="https://www.nipponpaint-indonesia.com/products/interior/dinding-interior/nippon-vinilex-with-silver-ion" target="_blank">Vinilex.png</a></code></td>
+                        <td>Foto kemasan cat Vinilex di katalog</td>
+                        <td>Nipponpaint-indonesia.com</td>
+                    </tr>
+                    <tr>
+                        <td><code><a href="https://www.nipponpaint-indonesia.com/products/interior/dinding-interior/matex" target="_blank">Matex.png</a></code></td>
+                        <td>Foto kemasan cat Matex di katalog</td>
+                        <td>Nipponpaint-indonesia.com</td>
+                    </tr>
+                    <tr>
+                        <td><code><a href="https://www.nipponpaint-indonesia.com/products/eksterior/dinding-exterior/tilelac-textured-paint" target="_blank">Tilelac.png</a></code></td>
+                        <td>Foto kemasan cat Tilelac di katalog</td>
+                        <td>Nipponpaint-indonesia.com</td>
+                    </tr>
+                    <tr>
+                        <td><code>CEO.png</code></td>
+                        <td>Foto profil pada halaman Profil</td>
+                        <td>Dokumen Pribadi</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+
+    <footer>&copy; 2026 Buddy Paint Indonesia.</footer>
+
+    <script>
+        const sourceHeader = document.querySelector('.site-header');
+        const sourceToggle = document.querySelector('.menu-toggle');
+        const sourceNavLinks = document.querySelector('.nav-links');
+
+        if (sourceHeader) {
+            window.addEventListener('scroll', () => {
+                sourceHeader.classList.toggle('scrolled', window.scrollY > 12);
+            });
+        }
+
+        if (sourceToggle && sourceNavLinks) {
+            sourceToggle.addEventListener('click', () => {
+                const isOpen = sourceNavLinks.classList.toggle('is-open');
+                sourceToggle.classList.toggle('is-open', isOpen);
+                sourceToggle.setAttribute('aria-expanded', String(isOpen));
+            });
+
+            sourceNavLinks.querySelectorAll('a').forEach((link) => {
+                link.addEventListener('click', () => {
+                    sourceNavLinks.classList.remove('is-open');
+                    sourceToggle.classList.remove('is-open');
+                    sourceToggle.setAttribute('aria-expanded', 'false');
+                });
+            });
+
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 680) {
+                    sourceNavLinks.classList.remove('is-open');
+                    sourceToggle.classList.remove('is-open');
+                    sourceToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+        }
+    </script>
+    <script src="header.js"></script>
+</body>
+</html>
