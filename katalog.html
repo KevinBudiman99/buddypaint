@@ -243,6 +243,16 @@
 
         .pilihan-berat {
             margin: 15px 0;
+        }
+
+        .deskripsi-variasi {
+            margin: -4px 0 16px;
+            padding: 12px 14px;
+            border-left: 3px solid var(--accent-strong);
+            border-radius: 0 10px 10px 0;
+            background: var(--panel-soft);
+            color: var(--muted);
+            font-size: 14px;
             display: grid;
             gap: 10px;
         }
@@ -282,6 +292,175 @@
 
         .btn-beli:hover {
             background: var(--accent-strong);
+        }
+
+        .checkout-section {
+            max-width: 1200px;
+            margin: 0 auto 48px;
+            padding: 0 24px;
+        }
+
+        .checkout-card {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 10px 24px var(--shadow);
+        }
+
+        .checkout-card h2 {
+            margin-bottom: 6px;
+        }
+
+        .checkout-intro,
+        .cart-empty,
+        .shipping-note {
+            color: var(--muted);
+        }
+
+        .cart-items {
+            display: grid;
+            gap: 12px;
+            margin: 22px 0;
+        }
+
+        .cart-item {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto auto auto;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: #fff;
+        }
+
+        .cart-item h3 {
+            font-family: inherit;
+            font-size: 16px;
+            letter-spacing: 0;
+        }
+
+        .cart-item p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .cart-item-price {
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-control button,
+        .remove-item {
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--panel-soft);
+            color: var(--dark);
+            cursor: pointer;
+            min-width: 34px;
+            min-height: 34px;
+            font-size: 16px;
+        }
+
+        .remove-item {
+            padding: 6px 10px;
+            font-size: 13px;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 18px 0 8px;
+            border-top: 1px solid var(--line);
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .shipping-note {
+            margin-bottom: 24px;
+            font-size: 13px;
+        }
+
+        .checkout-form {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+            margin-top: 22px;
+        }
+
+        .form-field {
+            display: grid;
+            gap: 7px;
+        }
+
+        .form-field.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-field label {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .form-field input,
+        .form-field textarea,
+        .form-field select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #d8cbb9;
+            border-radius: 10px;
+            background: #fff;
+            color: var(--text);
+            font: inherit;
+        }
+
+        .form-field textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-field input:focus,
+        .form-field textarea:focus,
+        .form-field select:focus {
+            outline: 2px solid var(--accent-strong);
+            outline-offset: 2px;
+        }
+
+        .checkout-submit {
+            grid-column: 1 / -1;
+            border: 0;
+            border-radius: 999px;
+            padding: 14px 18px;
+            background: var(--dark);
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .checkout-submit:hover {
+            background: var(--accent-strong);
+        }
+
+        .checkout-confirmation {
+            margin-top: 20px;
+            padding: 16px;
+            border: 1px solid #b8d7b3;
+            border-radius: 12px;
+            background: #f0f8ed;
+            color: #285328;
+        }
+
+        [hidden] {
+            display: none !important;
         }
 
         footer {
@@ -328,6 +507,37 @@
 
             .page-header p {
                 font-size: 1rem;
+            }
+
+            .checkout-section {
+                padding: 0 16px;
+            }
+
+            .checkout-card {
+                padding: 22px 16px;
+            }
+
+            .cart-item {
+                grid-template-columns: 1fr auto;
+                gap: 12px;
+            }
+
+            .cart-item .quantity-control {
+                grid-column: 1;
+            }
+
+            .cart-item-price {
+                grid-column: 2;
+                grid-row: 1;
+            }
+
+            .checkout-form {
+                grid-template-columns: 1fr;
+            }
+
+            .form-field.full-width,
+            .checkout-submit {
+                grid-column: auto;
             }
         }
     </style>
@@ -591,8 +801,54 @@
         </div>
     </main>
 
+    <section class="checkout-section" id="checkout" aria-labelledby="checkoutTitle">
+        <div class="checkout-card">
+            <h2 id="checkoutTitle">Keranjang & Checkout</h2>
+            <p class="checkout-intro">Periksa pilihan produk, lalu isi data pengiriman untuk menyiapkan pesanan.</p>
+            <p class="cart-empty" id="cartEmpty">Keranjang masih kosong. Pilih warna dan variasi produk untuk mulai berbelanja.</p>
+            <div class="cart-items" id="cartItems" aria-live="polite"></div>
+            <div id="checkoutDetails" hidden>
+                <div class="cart-total">
+                    <span>Total produk</span>
+                    <span id="cartTotal">Rp 0</span>
+                </div>
+                <p class="shipping-note">Ongkos kirim akan dikonfirmasi saat pesanan diproses.</p>
+                <form class="checkout-form" id="checkoutForm">
+                    <div class="form-field">
+                        <label for="namaPemesan">Nama lengkap</label>
+                        <input id="namaPemesan" name="nama" type="text" autocomplete="name" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="teleponPemesan">Nomor telepon</label>
+                        <input id="teleponPemesan" name="telepon" type="tel" autocomplete="tel" inputmode="tel" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="emailPemesan">Email</label>
+                        <input id="emailPemesan" name="email" type="email" autocomplete="email" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="metodePembayaran">Metode pembayaran</label>
+                        <select id="metodePembayaran" name="pembayaran" required>
+                            <option value="">Pilih metode pembayaran</option>
+                            <option value="Transfer bank">Transfer bank</option>
+                            <option value="Bayar di tempat (COD)">Bayar di tempat (COD)</option>
+                            <option value="E-wallet">E-wallet</option>
+                        </select>
+                    </div>
+                    <div class="form-field full-width">
+                        <label for="alamatPemesan">Alamat pengiriman</label>
+                        <textarea id="alamatPemesan" name="alamat" autocomplete="street-address" required></textarea>
+                    </div>
+                    <div class="form-field full-width">
+                        <label for="catatanPesanan">Catatan (opsional)</label>
+                        <textarea id="catatanPesanan" name="catatan"></textarea>
+                    </div>
+                    <button class="checkout-submit" type="submit">Siapkan Pesanan</button>
+                </form>
+                <div class="checkout-confirmation" id="checkoutConfirmation" role="status" hidden></div>
+            </div>
         </div>
-    </main>
+    </section>
 
     <!-- Pop-up Modal Detail & Pembelian -->
     <div class="modal-bg" id="modalBeli">
@@ -619,6 +875,7 @@
                     <input type="radio" name="ukuranKg" value="20" onchange="hitungHarga()"> Tilelac
                 </label>
             </div>
+            <p class="deskripsi-variasi" id="deskripsiVariasi" aria-live="polite"></p>
 
             <div class="harga-display" id="displayHarga">Rp 0</div>
             <button class="btn-beli" onclick="tambahKeranjang()">Tambah ke Keranjang</button>
@@ -671,15 +928,29 @@
         // Variabel global untuk menyimpan harga dasar produk
         let hargaDasar = 0;
         const variasiHarga = {
-            '1': { nama: 'Vinilex', harga: 250000 },
-            '2.5': { nama: 'Matex', harga: 300000 },
-            '20': { nama: 'Tilelac', harga: 200000 }
+            '1': {
+                nama: 'Vinilex',
+                harga: 250000,
+                deskripsi: 'Cat tembok interior berbahan dasar air dengan hasil akhir halus dan matte, cocok untuk mempercantik dinding ruangan.'
+            },
+            '2.5': {
+                nama: 'Matex',
+                harga: 300000,
+                deskripsi: 'Cat tembok interior berbahan dasar air dengan hasil akhir matte. Pilihan praktis untuk pengecatan dan perawatan dinding rumah.'
+            },
+            '20': {
+                nama: 'Tilelac',
+                harga: 200000,
+                deskripsi: 'Cat bertekstur untuk dinding eksterior, memberikan tampilan dekoratif sekaligus membantu menyamarkan ketidaksempurnaan permukaan.'
+            }
         };
         const gambarKemasanPerUkuran = {
             '1': { nama: 'Vinilex', file: 'Vinilex.png' },
             '2.5': { nama: 'Matex', file: 'Matex.png' },
             '20': { nama: 'Tilelac', file: 'Tilelac.png' }
         };
+        const keranjang = [];
+        const formatRupiah = (nilai) => 'Rp ' + nilai.toLocaleString('id-ID');
 
         // 1. Fungsi untuk membuka modal dan menampilkan data produk yang diklik
         function bukaModal(nama, kode, warnaHex, kategori, harga) {
@@ -723,6 +994,9 @@
             const pilihan = variasiHarga[String(ukuranDipilih)];
             const totalHarga = pilihan ? pilihan.harga : hargaDasar;
 
+            document.getElementById('deskripsiVariasi').innerText = pilihan
+                ? pilihan.deskripsi
+                : '';
             document.getElementById('displayHarga').innerText = 'Rp ' + totalHarga.toLocaleString('id-ID');
         }
 
@@ -752,9 +1026,106 @@
 
         // 4. Fungsi saat tombol "Tambah ke Keranjang" diklik
         function tambahKeranjang() {
-            alert('Produk berhasil ditambahkan ke keranjang!');
+            const nama = document.getElementById('modalNamaWarna').innerText;
+            const kode = document.getElementById('modalSubWarna').innerText;
+            const ukuran = document.querySelector('input[name="ukuranKg"]:checked').value;
+            const variasi = variasiHarga[ukuran];
+            const itemAda = keranjang.find((item) => item.kode === kode && item.ukuran === ukuran);
+
+            if (itemAda) {
+                itemAda.jumlah += 1;
+            } else {
+                keranjang.push({
+                    kode,
+                    nama,
+                    ukuran,
+                    variasi: variasi.nama,
+                    harga: variasi.harga,
+                    jumlah: 1
+                });
+            }
+
+            renderKeranjang();
             tutupModal();
+            document.getElementById('checkout').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
+
+        function renderKeranjang() {
+            const cartItems = document.getElementById('cartItems');
+            const isKosong = keranjang.length === 0;
+            document.getElementById('cartEmpty').hidden = !isKosong;
+            document.getElementById('checkoutDetails').hidden = isKosong;
+            document.getElementById('checkoutConfirmation').hidden = true;
+            cartItems.replaceChildren();
+
+            keranjang.forEach((item, index) => {
+                const baris = document.createElement('article');
+                baris.className = 'cart-item';
+
+                const detail = document.createElement('div');
+                const judul = document.createElement('h3');
+                judul.textContent = item.nama;
+                const keterangan = document.createElement('p');
+                keterangan.textContent = `${item.kode} · ${item.variasi}`;
+                detail.append(judul, keterangan);
+
+                const kontrol = document.createElement('div');
+                kontrol.className = 'quantity-control';
+                const kurang = document.createElement('button');
+                kurang.type = 'button';
+                kurang.textContent = '−';
+                kurang.setAttribute('aria-label', `Kurangi jumlah ${item.nama}`);
+                kurang.addEventListener('click', () => ubahJumlah(index, -1));
+                const jumlah = document.createElement('span');
+                jumlah.textContent = item.jumlah;
+                const tambah = document.createElement('button');
+                tambah.type = 'button';
+                tambah.textContent = '+';
+                tambah.setAttribute('aria-label', `Tambah jumlah ${item.nama}`);
+                tambah.addEventListener('click', () => ubahJumlah(index, 1));
+                kontrol.append(kurang, jumlah, tambah);
+
+                const harga = document.createElement('span');
+                harga.className = 'cart-item-price';
+                harga.textContent = formatRupiah(item.harga * item.jumlah);
+
+                const hapus = document.createElement('button');
+                hapus.className = 'remove-item';
+                hapus.type = 'button';
+                hapus.textContent = 'Hapus';
+                hapus.setAttribute('aria-label', `Hapus ${item.nama} dari keranjang`);
+                hapus.addEventListener('click', () => hapusItem(index));
+
+                baris.append(detail, kontrol, harga, hapus);
+                cartItems.append(baris);
+            });
+
+            const total = keranjang.reduce((jumlah, item) => jumlah + item.harga * item.jumlah, 0);
+            document.getElementById('cartTotal').textContent = formatRupiah(total);
+        }
+
+        function ubahJumlah(index, perubahan) {
+            keranjang[index].jumlah += perubahan;
+            if (keranjang[index].jumlah <= 0) {
+                keranjang.splice(index, 1);
+            }
+            renderKeranjang();
+        }
+
+        function hapusItem(index) {
+            keranjang.splice(index, 1);
+            renderKeranjang();
+        }
+
+        document.getElementById('checkoutForm').addEventListener('submit', (event) => {
+            event.preventDefault();
+            if (keranjang.length === 0) return;
+
+            const nama = document.getElementById('namaPemesan').value.trim();
+            const konfirmasi = document.getElementById('checkoutConfirmation');
+            konfirmasi.textContent = `Terima kasih, ${nama}!`;
+            konfirmasi.hidden = false;
+        });
     </script>
     <script src="header.js"></script>
 </body>

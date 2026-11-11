@@ -53,6 +53,19 @@
     .profile-hero h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); line-height: 1.05; letter-spacing: -1.5px; margin: 18px 0 16px; }
     .profile-hero p { font-size: 1.08rem; color: var(--muted); max-width: 680px; margin: 0 auto; }
 
+    .brand-story { margin-bottom: 52px; }
+    .brand-story-header { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 28px; }
+    .brand-story-header h2 { font-size: clamp(2.4rem, 4vw, 3.5rem); line-height: 1.05; color: var(--dark); }
+    .brand-story-header p { max-width: 520px; font-size: 1.02rem; line-height: 1.7; }
+    .brand-story-eyebrow { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border: 1px solid rgba(26, 21, 19, 0.08); border-radius: 999px; background: rgba(255,255,255,0.35); color: var(--accent-strong); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; margin-bottom: 18px; }
+    .brand-story-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 28px; align-items: center; }
+    .brand-story-copy { background: linear-gradient(135deg, rgba(255,255,255,0.78), rgba(244,234,216,0.82)); border: 1px solid var(--line); border-radius: 28px; padding: 38px; box-shadow: 0 22px 42px rgba(73, 52, 33, 0.08); }
+    .brand-story-copy p { font-size: 1.02rem; line-height: 1.9; color: var(--muted); margin-bottom: 18px; }
+    .brand-story-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .brand-story-stat { background: var(--panel); border: 1px solid var(--line); border-radius: 22px; padding: 26px 20px; text-align: center; }
+    .brand-story-stat strong { display: block; font-size: clamp(2rem, 3vw, 2.6rem); color: var(--dark); font-family: Georgia, 'Times New Roman', serif; letter-spacing: -0.04em; margin-bottom: 6px; }
+    .brand-story-stat span { font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+
     .motto-card { background: linear-gradient(135deg, rgba(255,255,255,0.78), rgba(244,234,216,0.82)); border: 1px solid var(--line); text-align: center; padding: 32px 24px; border-radius: 24px; box-shadow: 0 10px 24px var(--shadow); margin-bottom: 52px; }
     .motto-card h2 { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.16em; margin-bottom: 8px; }
     .motto-card blockquote { font-size: clamp(1.35rem, 3vw, 1.8rem); font-weight: 700; color: var(--accent-strong); letter-spacing: -0.5px; }
@@ -91,6 +104,9 @@
       .ceo-section { flex-direction: column; text-align: center; padding: 30px 22px; gap: 26px; }
       .ceo-image-wrapper { flex: auto; }
       .ceo-quote { border-left: none; border-top: 2px solid var(--accent); padding-left: 0; padding-top: 12px; }
+      .brand-story-header { display: grid; align-items: start; }
+      .brand-story-grid { grid-template-columns: 1fr; }
+      .brand-story-copy { padding: 30px 24px; }
       .grid-2 { grid-template-columns: 1fr; }
       .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
@@ -145,6 +161,42 @@
       <h1>Profil Perusahaan</h1>
       <p>Menghadirkan kualitas warna dan perlindungan yang membantu setiap ruang terasa lebih hidup.</p>
     </header>
+
+    <section class="brand-story" aria-labelledby="brandStoryTitle">
+      <div class="brand-story-header">
+        <div>
+          <span class="brand-story-eyebrow">Why we made Buddy</span>
+          <h2 id="brandStoryTitle">Made for the way modern homes live.</h2>
+        </div>
+        <p>Setiap ruang butuh karakter yang tepat — nyaman, hangat, dan menawan. Buddy dibuat untuk memberi sentuhan visual yang terasa premium tanpa kehilangan kepraktisan.</p>
+      </div>
+
+      <div class="brand-story-grid">
+        <div class="brand-story-copy">
+          <p>Cat bukan sekadar pelindung dinding. Ia adalah fondasi mood ruangan, ekspresi gaya hidup, dan elemen yang memengaruhi bagaimana Anda merasa di rumah setiap hari.</p>
+          <p>Kami menghadirkan formula dengan ketahanan warna tinggi, hasil akhir yang halus, dan palet yang terinspirasi dari ruang yang hangat, tenang, dan elegan.</p>
+        </div>
+
+        <div class="brand-story-stats">
+          <div class="brand-story-stat">
+            <strong>24</strong>
+            <span>kumpulan warna</span>
+          </div>
+          <div class="brand-story-stat">
+            <strong>100%</strong>
+            <span>design-focused</span>
+          </div>
+          <div class="brand-story-stat">
+            <strong>Low</strong>
+            <span>VOC formula</span>
+          </div>
+          <div class="brand-story-stat">
+            <strong>Long</strong>
+            <span>lasting finish</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- Motto Perusahaan -->
     <section class="motto-card">

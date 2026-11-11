@@ -406,59 +406,6 @@
             line-height: 1.7;
         }
 
-        .story-grid {
-            display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            gap: 28px;
-            align-items: center;
-        }
-
-        .story-card {
-            background: linear-gradient(135deg, rgba(255,255,255,0.78), rgba(244,234,216,0.82));
-            border: 1px solid var(--line);
-            border-radius: 28px;
-            padding: 38px;
-            box-shadow: 0 22px 42px rgba(73, 52, 33, 0.08);
-        }
-
-        .story-card p {
-            font-size: 1.02rem;
-            line-height: 1.9;
-            color: var(--muted);
-            margin-bottom: 18px;
-        }
-
-        .story-stats {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 18px;
-        }
-
-        .stat {
-            background: var(--panel);
-            border: 1px solid var(--line);
-            border-radius: 22px;
-            padding: 26px 20px;
-            text-align: center;
-        }
-
-        .stat strong {
-            display: block;
-            font-size: clamp(2rem, 3vw, 2.6rem);
-            color: var(--dark);
-            font-family: Georgia, 'Times New Roman', serif;
-            letter-spacing: -0.04em;
-            margin-bottom: 6px;
-        }
-
-        .stat span {
-            font-size: 0.75rem;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--muted);
-            font-weight: 700;
-        }
-
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -583,9 +530,57 @@
             font-size: 14px;
         }
 
+        .asas-popup {
+            position: fixed;
+            inset: 0;
+            z-index: 3000;
+            display: grid;
+            place-items: center;
+            padding: 20px;
+            background: rgba(29, 24, 21, 0.58);
+        }
+
+        .asas-popup[hidden] {
+            display: none;
+        }
+
+        .asas-popup-card {
+            position: relative;
+            width: min(100%, 480px);
+            padding: 38px;
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            background: var(--panel);
+            box-shadow: 0 24px 60px rgba(29, 24, 21, 0.24);
+            text-align: center;
+        }
+
+        .asas-popup-card .eyebrow {
+            margin-bottom: 14px;
+        }
+
+        .asas-popup-card h2 {
+            margin-bottom: 12px;
+            font-size: clamp(1.8rem, 5vw, 2.4rem);
+        }
+
+        .asas-popup-card p {
+            margin-bottom: 24px;
+        }
+
+        .asas-popup-close {
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            border: 0;
+            background: transparent;
+            color: var(--muted);
+            font-size: 28px;
+            cursor: pointer;
+        }
+
         @media (max-width: 860px) {
             .hero-grid,
-            .story-grid,
             .section-header,
             .cta-box {
                 grid-template-columns: 1fr;
@@ -670,42 +665,6 @@
             </div>
         </section>
 
-        <section class="section">
-            <div class="section-header">
-                <div>
-                    <div class="eyebrow">Why we made Buddy</div>
-                    <h2>Made for the way modern homes live.</h2>
-                </div>
-                <p>Setiap ruang butuh karakter yang tepat — nyaman, hangat, dan menawan. Buddy dibuat untuk memberi sentuhan visual yang terasa premium tanpa kehilangan kepraktisan.</p>
-            </div>
-
-            <div class="story-grid">
-                <div class="story-card">
-                    <p>Cat bukan sekadar pelindung dinding. Ia adalah fondasi mood ruangan, ekspresi gaya hidup, dan elemen yang memengaruhi bagaimana Anda merasa di rumah setiap hari.</p>
-                    <p>Kami menghadirkan formula dengan ketahanan warna tinggi, hasil akhir yang halus, dan palet yang terinspirasi dari ruang yang hangat, tenang, dan elegan.</p>
-                </div>
-
-                <div class="story-stats">
-                    <div class="stat">
-                        <strong>24</strong>
-                        <span>kumpulan warna</span>
-                    </div>
-                    <div class="stat">
-                        <strong>100%</strong>
-                        <span>design-focused</span>
-                    </div>
-                    <div class="stat">
-                        <strong>Low</strong>
-                        <span>VOC formula</span>
-                    </div>
-                    <div class="stat">
-                        <strong>Long</strong>
-                        <span>lasting finish</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <section class="section" aria-label="Kelebihan Buddy Paint">
             <div class="section-header">
                 <div>
@@ -740,7 +699,6 @@
                         <div class="eyebrow">Curated tones</div>
                         <h2>Find the mood that fits your space.</h2>
                     </div>
-                    <p>Palet kami disusun agar lebih mudah dipilih sesuai kehangatan, kecerahan, dan suasana yang ingin diciptakan di rumah.</p>
                 </div>
 
                 <div class="palette-grid">
@@ -791,10 +749,40 @@
         &copy; 2026 Buddy Paint Indonesia.
     </footer>
 
+    <div class="asas-popup" id="asasPopup" role="dialog" aria-modal="true" aria-labelledby="asasPopupTitle" aria-describedby="asasPopupDescription">
+        <div class="asas-popup-card">
+            <button class="asas-popup-close" id="asasPopupClose" type="button" aria-label="Tutup pengenalan">&times;</button>
+            <div class="eyebrow">Pengenalan website</div>
+            <h2 id="asasPopupTitle">Selamat datang di Buddy Paint</h2>
+            <p id="asasPopupDescription">Website ini dibuat sebagai bagian dari projek ASAS Informatika. Di website ini saya menjual cat berkualitas tinggi, dengan pilihan warna yang variatif.</p>
+            <button class="btn" id="asasPopupStart" type="button">Mulai menjelajahi</button>
+        </div>
+    </div>
+
     <script>
         const header = document.querySelector('.site-header');
         const toggle = document.querySelector('.menu-toggle');
         const navLinks = document.querySelector('.nav-links');
+        const asasPopup = document.getElementById('asasPopup');
+        const asasPopupClose = document.getElementById('asasPopupClose');
+        const asasPopupStart = document.getElementById('asasPopupStart');
+
+        document.body.style.overflow = 'hidden';
+        asasPopupStart.focus();
+
+        function tutupPengenalan() {
+            asasPopup.hidden = true;
+            document.body.style.overflow = '';
+        }
+
+        asasPopupClose.addEventListener('click', tutupPengenalan);
+        asasPopupStart.addEventListener('click', tutupPengenalan);
+        asasPopup.addEventListener('click', (event) => {
+            if (event.target === asasPopup) tutupPengenalan();
+        });
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && !asasPopup.hidden) tutupPengenalan();
+        });
 
         if (header) {
             window.addEventListener('scroll', () => {
